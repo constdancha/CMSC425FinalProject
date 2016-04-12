@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ASteroid : MonoBehaviour {
+public class Asteroid : MonoBehaviour {
 
 	private Rigidbody rb;
+	public int speed = 1;
 
 	void Start(){
 		rb = GetComponent<Rigidbody> ();
@@ -11,7 +12,13 @@ public class ASteroid : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 		transform.Rotate (new Vector3 (15, 30, 45) * Time.deltaTime);
-		Vector3 movement = new Vector3 (0.0f, -1.0f, 0.0f);
+		Vector3 movement = new Vector3 (0.0f, -1.0f * speed, 0.0f);
 		rb.AddForce (movement * 1.0f);
+
+		if (rb.position.y < -10) {
+			rb.gameObject.SetActive(false);
+			Debug.Log(this);
+			Destroy(this);
+		}
 	}
 }
