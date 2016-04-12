@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerScript : MonoBehaviour {
+public class PlayerHealth : MonoBehaviour {
 
 	private int health;
 	private int speed;
