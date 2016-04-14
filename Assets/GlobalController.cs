@@ -31,6 +31,8 @@ public class GlobalController : MonoBehaviour {
                 0
                 );
 
+		Debug.Log(startingPosition.x);
+
 		tempAsteroid = asteroidPrefabs[(int)Mathf.Round(Random.Range(0,2))];
 
 		GameObject asteroid = (GameObject)Instantiate(

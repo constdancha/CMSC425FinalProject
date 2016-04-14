@@ -15,6 +15,9 @@ public class PlayerScript : MonoBehaviour {
 	}
 		
 	void FixedUpdate () {
+		// Keeping the player on the z-plane
+		rb.position = new Vector3(rb.position.x, rb.position.y, 0);
+
 		float moveHorizontal = Input.GetAxis ("Horizontal");
 		float moveVertical = Input.GetAxis ("Vertical");
 		Vector3 leftForce, rightForce, downForce, upForce;

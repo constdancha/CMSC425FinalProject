@@ -13,12 +13,12 @@ public class Asteroid : MonoBehaviour {
 	void FixedUpdate () {
 		transform.Rotate (new Vector3 (15, 30, 45) * Time.deltaTime);
 		Vector3 movement = new Vector3 (0.0f, -1.0f * speed, 0.0f);
-		rb.AddForce (movement * 1.0f);
+		// rb.AddForce (movement * 1.0f);
+		rb.velocity = movement;
 
 		if (rb.position.y < -10) {
 			rb.gameObject.SetActive(false);
-			Debug.Log(this);
-			Destroy(this);
+			Debug.Log("Destroyed " + this);
 		}
 	}
 }
