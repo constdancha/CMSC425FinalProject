@@ -11,37 +11,18 @@ public class PlayerScript : MonoBehaviour {
 	void Start(){
 		rb = GetComponent<Rigidbody> ();
 		rb.useGravity = false;
-		speed = 50;
+		speed = 200;
 	}
 		
 	void FixedUpdate () {
 		// Keeping the player on the z-plane
 		rb.position = new Vector3(rb.position.x, rb.position.y, 0);
 
-		float moveHorizontal = Input.GetAxis ("Horizontal");
-		float moveVertical = Input.GetAxis ("Vertical");
-		Vector3 leftForce, rightForce, downForce, upForce;
-		int opposingForce = 5;
+		float moveHorizontal = Input.GetAxis("Horizontal");
+		float moveVertical = Input.GetAxis("Vertical");
 
-		if (rb.position.x >= 8.70f) {
-			leftForce = new Vector3 (-3.0f, 0.0f, 0.0f);
-			rb.AddForce (leftForce * opposingForce);
-
-		} else if(rb.position.x <= -8.70f){
-			rightForce = new Vector3 (3.0f, 0.0f, 0.0f);
-			rb.AddForce (rightForce * opposingForce);
-
-		}else if(rb.position.y >= 4.40f){
-			downForce = new Vector3 (0.0f, -3.0f, 0.0f);
-			rb.AddForce (downForce * opposingForce);
-
-		}else if(rb.position.y <= -4.40f){
-			upForce = new Vector3 (0.0f, 3.0f, 0.0f);
-			rb.AddForce (upForce * opposingForce);
-		}
-
-		Vector3 movement = new Vector3 (moveHorizontal, moveVertical, 0.0f);
-		rb.AddForce (movement * speed * Time.deltaTime);
+		Vector3 movement = new Vector3(moveHorizontal, moveVertical, 0.0f);
+		rb.AddForce(movement * speed * Time.deltaTime);
 	
 	}
 }
