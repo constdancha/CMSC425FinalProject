@@ -1,20 +1,46 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
-public class PlayerScript : MonoBehaviour {
+public class PlayerHealth : MonoBehaviour {
 
-	private int health;
-	private int speed;
+	public int health;
+	public int currentHealth;
+	public Image damageImage;
+	public Slider healthSlider;
+	public bool damaged;
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		health = 100;
-		speed = 5;
+		currentHealth = health;
+		damaged = false;
 	}
-	
+
 	// Update is called once per frame
-	void FixedUpdate () {
-		
+	void Update () {
+		if (damaged) {
+			damageImage.color = new Color (1f, 0f, 0f, 0.1f);
+		} else {
+			damageImage.color = Color.Lerp (damageImage.color, Color.clear, 5f *Time.deltaTime);
+		}
+		damaged = false;
 
 	}
 
+	public void getHit(){
+		damaged = true;
+		currentHealth -= 10;
+		healthSlider.value = currentHealth;
+
+	}
+
+	public void increaseHealth(){
+		if (currentHealth <= 95) {
+			currentHealth += 5;
+			healthSlider.value = currentHealth;
+		} else {
+			currentHealth = 100;
+			healthSlider.value = currentHealth;
+		}
+	}
 }
