@@ -9,6 +9,7 @@ public class CameraController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		player = GameObject.Find("Astronaut");
 		offset = transform.position - player.transform.position;
 	}
 	

@@ -9,7 +9,7 @@ public class ASteroid : MonoBehaviour {
 	private bool destroyFlag = false;
 
 	void Start(){
-		playerObject = GameObject.Find("Player");
+		playerObject = GameObject.Find("Astronaut");
 		rb = GetComponent<Rigidbody> ();
 
 		Vector3 movement = (playerObject.transform.position - rb.position);
