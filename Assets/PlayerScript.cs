@@ -8,15 +8,19 @@ public class PlayerScript : MonoBehaviour {
 	private Rigidbody rb;
 	public int speed;
 	PlayerHealth playerhealth;
+
 	public Canvas tryAgainMenu;
 	public Button yesButton;
 	public Button noButton;
+
+	private Animator animator;
+
 
 	void Start(){
 		rb = GetComponent<Rigidbody> ();
 		rb.useGravity = false;
 		speed = 200;
-
+		animator = GetComponent<Animator>();
 		playerhealth = GetComponent<PlayerHealth> ();
 		tryAgainMenu = tryAgainMenu.GetComponent<Canvas> ();
 		yesButton = yesButton.GetComponent<Button> ();
@@ -29,11 +33,23 @@ public class PlayerScript : MonoBehaviour {
 		// Keeping the player on the z-plane
 		rb.position = new Vector3(rb.position.x, rb.position.y, 0);
 
-		float moveHorizontal = Input.GetAxis("Horizontal");
+		//float moveHorizontal = Input.GetAxis("Horizontal");
 		float moveVertical = Input.GetAxis("Vertical");
+		Vector3 movement = new Vector3(0.0f, moveVertical, 0.0f);
+		if(Input.GetKey(KeyCode.LeftArrow)){
+			rotate(8);
+		}
+		if(Input.GetKey(KeyCode.RightArrow)){
+			rotate(-8);
+		}
 
-		Vector3 movement = new Vector3(moveHorizontal, moveVertical, 0.0f);
-		rb.AddForce(movement * speed * Time.deltaTime);
+		if(Input.GetKey(KeyCode.UpArrow)){
+			forward();
+		}else{
+			animator.SetTrigger("AstroAnim");
+		}
+		
+		
 
 		//edit menu
 		if(playerhealth.currentHealth <= 0 || playerhealth.fuel <= 0){
@@ -47,6 +63,7 @@ public class PlayerScript : MonoBehaviour {
 		}
 	}
 
+
 	public void NoPress(){
 		tryAgainMenu.enabled = false;
 		Application.Quit ();
@@ -55,6 +72,15 @@ public class PlayerScript : MonoBehaviour {
 	public void YesPress(){
 		//load scene again
 		EditorSceneManager.LoadScene("OpeningScene_Ella2");
+	}
+	void rotate(float move){
+		transform.Rotate (Vector3.forward * move);
+	}
+
+	void forward(){
+		animator.SetTrigger ("ThrustAnim");
+		rb.AddForce(transform.up * speed * Time.deltaTime);
+
 	}
 
 	void OnCollisionEnter(Collision collision){
@@ -65,7 +91,8 @@ public class PlayerScript : MonoBehaviour {
 	void OnTriggerEnter(Collider other){
 		if (other.gameObject.tag.Equals ("Health")) {
 			playerhealth.increaseHealth ();
+			Destroy (other.gameObject);
 		}
-		Destroy (other.gameObject);
+
 	}
 }
