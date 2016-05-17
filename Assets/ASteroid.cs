@@ -5,7 +5,8 @@ public class ASteroid : MonoBehaviour {
 	private GameObject playerObject;
 	private Rigidbody rb;
 	public int speed = 1;
-	public int threshold = 40;
+	public int threshold = 100;
+	public int cameraThreshold = 20;
 	private bool destroyFlag = false;
 
 	void Start(){
@@ -31,13 +32,14 @@ public class ASteroid : MonoBehaviour {
 		// Keeping asteroids on the z-plane
 		rb.position = new Vector3(rb.position.x, rb.position.y, 0);
 
-		if (Vector3.Distance(rb.position, playerObject.transform.position) > threshold) {
-			if (destroyFlag) {
-				rb.gameObject.SetActive(false);
-				Debug.Log("Destroyed " + this);
-			}
-		} else if (!destroyFlag) {
-			destroyFlag = true;
-		}
+		// // Destroying "inactive" asteroids once out of the player's range
+		// if (Vector3.Distance(rb.position, playerObject.transform.position) > threshold) {
+		// 	if (destroyFlag) {
+		// 		rb.gameObject.SetActive(false);
+		// 		Debug.Log("Destroyed " + this);
+		// 	}
+		// } else if (!destroyFlag && Vector3.Distance(rb.position, playerObject.transform.position) < cameraThreshold) {
+		// 	destroyFlag = true;
+		// }
 	}
 }
