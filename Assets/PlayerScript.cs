@@ -42,8 +42,11 @@ public class PlayerScript : MonoBehaviour {
 		if(Input.GetKey(KeyCode.RightArrow)){
 			rotate(-8);
 		}
+
 		if(Input.GetKey(KeyCode.UpArrow)){
 			forward();
+		}else{
+			animator.SetTrigger("AstroAnim");
 		}
 		
 		
