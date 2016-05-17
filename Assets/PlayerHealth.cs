@@ -18,11 +18,11 @@ public class PlayerHealth : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if (damaged) {
+		/*if (damaged) {
 			damageImage.color = new Color (1f, 0f, 0f, 0.1f);
 		} else {
 			damageImage.color = Color.Lerp (damageImage.color, Color.clear, 5f *Time.deltaTime);
-		}
+		}*/
 		damaged = false;
 
 	}
