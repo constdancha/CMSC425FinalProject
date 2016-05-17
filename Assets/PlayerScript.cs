@@ -28,6 +28,10 @@ public class PlayerScript : MonoBehaviour {
 		Vector3 movement = new Vector3(moveHorizontal, moveVertical, 0.0f);
 		rb.AddForce(movement * speed * Time.deltaTime);
 
+		// decrease fuel according to amount of movement
+		if (movement.magnitude > 0) {
+			playerhealth.useFuel();
+		}
 	}
 
 	void OnCollisionEnter(Collision collision){

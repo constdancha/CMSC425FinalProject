@@ -59,7 +59,7 @@ public class PlayerHealth : MonoBehaviour {
 	}
 
 	public void useFuel() {
-		fuel -= 0.3f;
+		fuel -= 0.15f;
 	}
 
 	public void getHit(){
