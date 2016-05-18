@@ -18,6 +18,7 @@ public class PlayerScript : MonoBehaviour {
 	AudioSource audio;
 	public AudioClip jetPackSound;
 	public AudioClip asteroidHitSound;
+	public AudioClip healthPickUpSound;
 
 	void Start(){
 		rb = GetComponent<Rigidbody> ();
@@ -98,6 +99,7 @@ public class PlayerScript : MonoBehaviour {
 	}
 	void OnTriggerEnter(Collider other){
 		if (other.gameObject.tag.Equals ("Health")) {
+			audio.PlayOneShot (healthPickUpSound, 0.9F);
 			playerhealth.increaseHealth ();
 			Destroy (other.gameObject);
 		}
