@@ -1,10 +1,13 @@
 fileFormatVersion: 2
 guid: 0d527024070004a9a91826085844463f
-timeCreated: 1460419423
+timeCreated: 1463543618
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - asteroidParent: {instanceID: 0}
+  - playerObject: {instanceID: 0}
+  - FuelPrefab: {fileID: 126416, guid: b483fb17030ec4c3685aa0a485e7890b, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

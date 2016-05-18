@@ -17,6 +17,7 @@ public class PlayerScript : MonoBehaviour {
 
 	AudioSource audio;
 	public AudioClip jetPackSound;
+	public AudioClip asteroidHitSound;
 
 	void Start(){
 		rb = GetComponent<Rigidbody> ();
@@ -91,6 +92,7 @@ public class PlayerScript : MonoBehaviour {
 
 	void OnCollisionEnter(Collision collision){
 		if (collision.gameObject.tag.Equals ("Asteroid")) {
+			audio.PlayOneShot (asteroidHitSound, 0.9F);
 			playerhealth.getHit ();
 		}
 	}
