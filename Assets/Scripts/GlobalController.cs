@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GlobalController : MonoBehaviour {
 
-	public float interval;
+	public float interval, hardInterval;
 	private float timeLeft;
 	public GameObject[] asteroidPrefabs;
 	public GameObject asteroidParent;
@@ -11,8 +12,11 @@ public class GlobalController : MonoBehaviour {
 	public GameObject playerObject;
 	public GameObject FuelPrefab;
 	public GameObject HealthPrefab;
+	public GameObject spacePrefab;
 	public GameObject arrow;
 	private GameObject fuel;
+
+	private List<Vector3> spaceList;
 	
 	int numfuel=0;
 	public int startingAsteroids = 100;
@@ -24,28 +28,10 @@ public class GlobalController : MonoBehaviour {
 	void Start () {
 		timeLeft = interval;
 
-		Renderer spaceRenderer = GetComponent<Renderer>();
-		dimX = spaceRenderer.bounds.size.x;
-		dimY = spaceRenderer.bounds.size.y;
-
-		Debug.Log(dimX + " " + dimY);
-
-		for (int i = 0; i < startingAsteroids; i++) {
-			Vector3 startingPosition = new Vector3(Random.Range(-dimX/2, dimX/2), Random.Range(-dimY/2, dimY/2), 0);
-			
-			// Make sure nothing spawns on the player
-			while (Vector3.Distance(startingPosition, playerObject.transform.position) < 5)
-				startingPosition = new Vector3(Random.Range(-dimX/2, dimX/2), Random.Range(-dimY/2, dimY/2), 0);
-
-			createAsteroid(startingPosition);
-		}
-
-		for (int i = 0; i < startingHealths; i++) {
-			Vector3 startingPosition = new Vector3(Random.Range(-dimX/2, dimX/2), Random.Range(-dimY/2, dimY/2), 0);
-			createHealthPickup(startingPosition);
-		}
-
 		fuel = createFuel(playerObject.transform.position);
+
+		spaceList = new List<Vector3>();
+		spaceList.Add(new Vector3(0, 0, 50));
 	}
 	
 	// Update is called once per frame
@@ -81,28 +67,30 @@ public class GlobalController : MonoBehaviour {
 		}
 
 		// Update arrow position
-		Vector3 fuelCameraPosition = Camera.main.WorldToViewportPoint(fuel.transform.position);
-		if (fuel && !(fuelCameraPosition.x < 1 && fuelCameraPosition.x > 0 && fuelCameraPosition.y < 1 && fuelCameraPosition.y > 0)) {
-			arrow.SetActive(true);
+		if (fuel) {
+			Vector3 fuelCameraPosition = Camera.main.WorldToViewportPoint(fuel.transform.position);
+			if (!(fuelCameraPosition.x < 1 && fuelCameraPosition.x > 0 && fuelCameraPosition.y < 1 && fuelCameraPosition.y > 0)) {
+				arrow.SetActive(true);
 
-			// position arrow
-			Vector3 arrowPos = new Vector3(0.5f, 0.5f, 0) - (playerObject.transform.position - fuel.transform.position).normalized*0.4f;
-			arrowPos = Camera.main.ViewportToWorldPoint(arrowPos);
-			arrowPos = new Vector3(arrowPos.x, arrowPos.y, 0);
-			arrow.transform.position = arrowPos;
+				// position arrow
+				Vector3 arrowPos = new Vector3(0.5f, 0.5f, 0) - (playerObject.transform.position - fuel.transform.position).normalized*0.4f;
+				arrowPos = Camera.main.ViewportToWorldPoint(arrowPos);
+				arrowPos = new Vector3(arrowPos.x, arrowPos.y, 0);
+				arrow.transform.position = Vector3.Lerp(arrow.transform.position, arrowPos, 0.2f);
 
-			// arrow.transform.position = playerObject.transform.position + arrowPos * 5;
+				// arrow.transform.position = playerObject.transform.position + arrowPos * 5;
 
-			// rotate arrow
-			Vector3 target = fuel.transform.position - playerObject.transform.position;
-			float angle = Mathf.Atan2(target.y, target.x);
-			arrow.transform.rotation = Quaternion.AngleAxis(Mathf.Rad2Deg * angle - 90, Vector3.forward);
-		} else {
-			arrow.SetActive(false);
+				// rotate arrow
+				Vector3 target = fuel.transform.position - playerObject.transform.position;
+				float angle = Mathf.Atan2(target.y, target.x);
+				arrow.transform.rotation = Quaternion.AngleAxis(Mathf.Rad2Deg * angle - 90, Vector3.forward);
+			} else {
+				arrow.SetActive(false);
+			}
 		}
 	}
 
-	void createAsteroid(Vector3 position) {
+	public void createAsteroid(Vector3 position) {
 		tempAsteroid = asteroidPrefabs[(int)Mathf.Round(Random.Range(0,2))];
 
 		GameObject asteroid = (GameObject)Instantiate(
@@ -130,8 +118,8 @@ public class GlobalController : MonoBehaviour {
 		return fuel;
 	}
 
-	void createHealthPickup(Vector3 position){
-		GameObject fuel = (GameObject)Instantiate(
+	public void createHealthPickup(Vector3 position){
+		Instantiate(
         		HealthPrefab,
         		position,
         		Quaternion.identity
@@ -140,5 +128,20 @@ public class GlobalController : MonoBehaviour {
 
 	public void pickedUpFuel(){
 		numfuel=0;
+	}
+
+	// Create a new space
+	public GameObject createSpace(Vector3 position, Quaternion rotation){
+		if (!spaceList.Contains(position)) {
+			spaceList.Add(position);
+			GameObject space = (GameObject)Instantiate(
+				spacePrefab,
+				position,
+				rotation
+				);
+			return space;
+		} else {
+			return null;
+		}
 	}
 }

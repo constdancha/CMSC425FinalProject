@@ -7,7 +7,6 @@ public class ASteroid : MonoBehaviour {
 	public int speed = 1;
 	public int threshold = 100;
 	public int cameraThreshold;
-	private bool destroyFlag = false;
 
 	AudioSource audio;
 	public AudioClip asteroidHitSound;
@@ -40,16 +39,6 @@ public class ASteroid : MonoBehaviour {
 
 		// Keeping asteroids on the z-plane
 		rb.position = new Vector3(rb.position.x, rb.position.y, 0);
-
-		// // Destroying "inactive" asteroids once out of the player's range
-		// if (Vector3.Distance(rb.position, playerObject.transform.position) > threshold) {
-		// 	if (destroyFlag) {
-		// 		rb.gameObject.SetActive(false);
-		// 		Debug.Log("Destroyed " + this);
-		// 	}
-		// } else if (!destroyFlag && Vector3.Distance(rb.position, playerObject.transform.position) < cameraThreshold) {
-		// 	destroyFlag = true;
-		// }
 	}
 
 	void OnCollisionEnter(Collision collision){

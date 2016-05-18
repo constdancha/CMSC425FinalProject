@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
-using UnityEditor.SceneManagement;
+using UnityEngine.SceneManagement;
 
 public class PlayerScript : MonoBehaviour {
 
@@ -9,16 +9,20 @@ public class PlayerScript : MonoBehaviour {
 	public int speed, acceleration;
 	PlayerHealth playerhealth;
 	GlobalController controller;
+	ScoreScript scoreScript;
 	public Canvas tryAgainMenu;
 	public Button yesButton;
 	public Button noButton;
-	GameObject space; 
 	private Animator animator;
 	private bool jetSound;
+
+	private int endGameTime;
+	private float endGameTimer;
 
 	AudioSource audio;
 	public AudioClip jetPackSound;
 	public AudioClip healthPickUpSound;
+	public AudioClip fuelPickUpSound;
 
 	void Start(){
 		rb = GetComponent<Rigidbody> ();
@@ -27,6 +31,8 @@ public class PlayerScript : MonoBehaviour {
 		speed = 10;
 		animator = GetComponent<Animator>();
 		playerhealth = GetComponent<PlayerHealth> ();
+		scoreScript = GetComponent<ScoreScript>();
+		controller = GetComponent<GlobalController>();
 		tryAgainMenu = tryAgainMenu.GetComponent<Canvas> ();
 		yesButton = yesButton.GetComponent<Button> ();
 		noButton = noButton.GetComponent<Button> ();
@@ -34,6 +40,9 @@ public class PlayerScript : MonoBehaviour {
 		audio.clip = jetPackSound;
 		audio.loop = true;
 		audio.volume = 0.3F;
+
+		endGameTime = 3;
+		endGameTimer = endGameTime;
 
 		tryAgainMenu.enabled = false;
 
@@ -43,11 +52,10 @@ public class PlayerScript : MonoBehaviour {
 	void FixedUpdate () {
 		// Keeping the player on the z-plane
 		rb.position = new Vector3(rb.position.x, rb.position.y, 0);
-		float moveVertical = Input.GetAxis("Vertical");
-		Vector3 movement = new Vector3(0.0f, moveVertical, 0.0f);
 		if(playerhealth.currentHealth<=0 || playerhealth.fuel<=0){
+			audio.Stop();
 			animator.SetTrigger("AstroDead");
-		}else{			
+		}else{
 			if(Input.GetKey(KeyCode.LeftArrow)){
 				rotate(8);
 			}
@@ -57,6 +65,8 @@ public class PlayerScript : MonoBehaviour {
 
 			if(Input.GetKey(KeyCode.UpArrow)){
 				forward();
+				// decrease fuel according to amount of movement
+				playerhealth.useFuel();
 				if (!jetSound) {
 					jetSound = true;
 					audio.Play();
@@ -73,19 +83,18 @@ public class PlayerScript : MonoBehaviour {
 		
 		// Capping player max speed
 		if (rb.velocity.magnitude > speed) {
-			Debug.Log("too fast!");
 			rb.velocity = rb.velocity.normalized * speed;
 		}
 
 		//edit menu
 		if(playerhealth.currentHealth <= 0 || playerhealth.fuel <= 0){
 			//Debug.Log ("health at 0");
-			tryAgainMenu.enabled = true;
-		}
-
-		// decrease fuel according to amount of movement
-		if (movement.magnitude > 0) {
-			playerhealth.useFuel();
+			endGameTimer -= Time.deltaTime;
+			if (endGameTimer < 0) {
+				tryAgainMenu.enabled = true;
+			}
+		} else {
+			endGameTimer = endGameTime;
 		}
 	}
 
@@ -97,7 +106,8 @@ public class PlayerScript : MonoBehaviour {
 
 	public void YesPress(){
 		//load scene again
-		EditorSceneManager.LoadScene("OpeningScene_Ella2");
+		// EditorSceneManager.LoadScene("FinalProject_Daniel");
+		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 	}
 	void rotate(float move){
 		transform.Rotate (Vector3.forward * move);
@@ -116,16 +126,20 @@ public class PlayerScript : MonoBehaviour {
 	}
 	void OnTriggerEnter(Collider other){
 		if (other.gameObject.tag.Equals ("Health")) {
-			audio.PlayOneShot (healthPickUpSound, 0.9F);
+			other.gameObject.GetComponent<AudioSource>().PlayOneShot(healthPickUpSound, 1f);
 			playerhealth.increaseHealth ();
-			Destroy (other.gameObject);
+			scoreScript.increaseScore(50);
+			other.gameObject.transform.position += Vector3.back * 80;
+			Destroy (other.gameObject, 2.0f);
 		}
 		if(other.gameObject.tag.Equals("Fuel")){
 			playerhealth.increaseFuel();
-			Destroy(other.gameObject);
-			space = GameObject.FindWithTag("Space");
+			other.gameObject.GetComponent<AudioSource>().PlayOneShot(fuelPickUpSound, 1f);
+			other.gameObject.transform.position += Vector3.back * 80;
+			Destroy(other.gameObject, 2.0f);
+
+			scoreScript.increaseScore(100);
 		
-			controller=space.GetComponent<GlobalController>();
 			controller.pickedUpFuel();
 			
 		}
