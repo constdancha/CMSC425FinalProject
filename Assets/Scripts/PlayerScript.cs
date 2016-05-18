@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class PlayerScript : MonoBehaviour {
 
 	private Rigidbody rb;
+	public ParticleSystem stream;
 	public int speed, acceleration;
 	PlayerHealth playerhealth;
 	GlobalController controller;
@@ -44,6 +45,8 @@ public class PlayerScript : MonoBehaviour {
 		audio.loop = true;
 		audio.volume = 0.3F;
 
+		stream.Stop();
+
 		endGameTime = 3;
 		endGameTimer = endGameTime;
 
@@ -59,6 +62,7 @@ public class PlayerScript : MonoBehaviour {
 		rb.position = new Vector3(rb.position.x, rb.position.y, 0);
 		if(playerhealth.currentHealth<=0 || playerhealth.fuel<=0){
 			audio.Stop();
+			stream.Stop();
 			animator.SetTrigger("AstroDead");
 		}else{
 			if(Input.GetKey(KeyCode.LeftArrow)){
@@ -84,12 +88,14 @@ public class PlayerScript : MonoBehaviour {
 				if (!jetSound) {
 					jetSound = true;
 					audio.Play();
+					stream.Play();
 				}
 			}else{
 				if(playerhealth.currentHealth>0){
 					animator.SetTrigger("AstroAnim");
-					audio.Stop();
 				}
+				audio.Stop();
+				stream.Stop();
 				if (jetSound)
 					jetSound = false;
 			}
