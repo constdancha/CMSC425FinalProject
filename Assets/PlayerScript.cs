@@ -94,7 +94,7 @@ public class PlayerScript : MonoBehaviour {
 		animator.SetTrigger ("ThrustAnim");
 		rb.AddForce(transform.up * speed * Time.deltaTime);
 
-		audio.PlayOneShot(jetPackSound, 0.3F);
+		audio.PlayOneShot(jetPackSound, 0.1F);
 	}
 
 	void OnCollisionEnter(Collision collision){
