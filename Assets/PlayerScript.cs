@@ -94,12 +94,12 @@ public class PlayerScript : MonoBehaviour {
 		animator.SetTrigger ("ThrustAnim");
 		rb.AddForce(transform.up * speed * Time.deltaTime);
 
-		audio.Play();
+		audio.PlayOneShot(jetPackSound, 0.3F);
 	}
 
 	void OnCollisionEnter(Collision collision){
 		if (collision.gameObject.tag.Equals ("Asteroid")) {
-			//audio.PlayOneShot (asteroidHitSound, 0.9F);
+			audio.PlayOneShot (asteroidHitSound, 0.9F);
 			playerhealth.getHit ();
 		}
 	}
