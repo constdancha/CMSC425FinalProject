@@ -20,7 +20,7 @@ public class ASteroid : MonoBehaviour {
 
 		movement = movement.normalized * 5;
 
-		movement = new Vector3(movement.x + Random.Range(-5,5), movement.y + Random.Range(-5,5), movement.z);
+		movement = new Vector3(movement.x + Random.Range(-2,2), movement.y + Random.Range(-2,2), movement.z);
 
 		movement = movement.normalized * speed;
 

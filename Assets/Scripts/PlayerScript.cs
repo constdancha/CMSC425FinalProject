@@ -11,10 +11,12 @@ public class PlayerScript : MonoBehaviour {
 	GlobalController controller;
 	ScoreScript scoreScript;
 	public Canvas tryAgainMenu;
+	public Canvas pauseMenu;
 	public Button yesButton;
 	public Button noButton;
 	private Animator animator;
 	private bool jetSound;
+	private bool paused;
 
 	private int endGameTime;
 	private float endGameTimer;
@@ -25,6 +27,7 @@ public class PlayerScript : MonoBehaviour {
 	public AudioClip fuelPickUpSound;
 
 	void Start(){
+		Time.timeScale = 1;
 		rb = GetComponent<Rigidbody> ();
 		rb.useGravity = false;
 		acceleration = 400;
@@ -44,12 +47,14 @@ public class PlayerScript : MonoBehaviour {
 		endGameTime = 3;
 		endGameTimer = endGameTime;
 
+		paused = false;
+		pauseMenu.enabled = false;
 		tryAgainMenu.enabled = false;
 
 		jetSound = false;
 	}
 		
-	void FixedUpdate () {
+	void Update () {
 		// Keeping the player on the z-plane
 		rb.position = new Vector3(rb.position.x, rb.position.y, 0);
 		if(playerhealth.currentHealth<=0 || playerhealth.fuel<=0){
@@ -61,6 +66,15 @@ public class PlayerScript : MonoBehaviour {
 			}
 			if(Input.GetKey(KeyCode.RightArrow)){
 				rotate(-8);
+			}
+
+			if(Input.GetKeyDown(KeyCode.Escape)){
+				paused = !paused;
+				pauseMenu.enabled = paused;
+				if (paused)
+					Time.timeScale = 0;
+				else
+					Time.timeScale = 1;
 			}
 
 			if(Input.GetKey(KeyCode.UpArrow)){
@@ -98,10 +112,15 @@ public class PlayerScript : MonoBehaviour {
 		}
 	}
 
+	public void unPause() {
+		paused = false;
+		pauseMenu.enabled = false;
+		Time.timeScale = 1;
+	}
 
 	public void NoPress(){
 		tryAgainMenu.enabled = false;
-		Application.Quit ();
+		SceneManager.LoadScene(0);
 	}
 
 	public void YesPress(){

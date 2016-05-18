@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class GlobalController : MonoBehaviour {
 
 	public float interval, hardInterval;
+	public int scoreThreshold;
 	private float timeLeft;
 	public GameObject[] asteroidPrefabs;
 	public GameObject asteroidParent;
@@ -15,6 +17,8 @@ public class GlobalController : MonoBehaviour {
 	public GameObject spacePrefab;
 	public GameObject arrow;
 	private GameObject fuel;
+
+	public Text scoreText;
 
 	private List<Vector3> spaceList;
 	
@@ -35,7 +39,7 @@ public class GlobalController : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void FixedUpdate () {
+	void Update () {
 		// Spawn new fuel pickup if one doesn't exist
 		if(numfuel==0){
 			fuel = createFuel(playerObject.transform.position);
@@ -87,6 +91,11 @@ public class GlobalController : MonoBehaviour {
 			} else {
 				arrow.SetActive(false);
 			}
+		}
+
+		// increase difficulty once score is high enough
+		if (int.Parse(scoreText.text) > scoreThreshold) {
+			interval = hardInterval;
 		}
 	}
 
