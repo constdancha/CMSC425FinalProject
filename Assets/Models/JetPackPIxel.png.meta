@@ -1,9 +1,11 @@
 fileFormatVersion: 2
 guid: 90c2d4fea6cd94dd59e67cc46fc34b28
-timeCreated: 1463445327
+timeCreated: 1463527381
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: JetPackPIxel_0
+    21300002: JetPackPIxel_1
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -30,7 +32,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     filterMode: -1
-    aniso: -1
+    aniso: 16
     mipBias: -1
     wrapMode: 1
   nPOTScale: 0
@@ -38,7 +40,7 @@ TextureImporter:
   rGBM: 0
   compressionQuality: 50
   allowsAlphaSplitting: 0
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -49,7 +51,45 @@ TextureImporter:
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
-    sprites: []
+    sprites:
+    - name: JetPackPIxel_0
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 3
+        width: 75
+        height: 91
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -28.5, y: 45.5}
+        - {x: -37.5, y: 28.5}
+        - {x: -37.5, y: 4.5}
+        - {x: -29.5, y: -36.5}
+        - {x: -23.5, y: -45.5}
+        - {x: 27.5, y: -45.5}
+        - {x: 37.5, y: -17.5}
+        - {x: 37.5, y: 45.5}
+    - name: JetPackPIxel_1
+      rect:
+        serializedVersion: 2
+        x: 109
+        y: 6
+        width: 75
+        height: 88
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -31.5, y: 44}
+        - {x: -37.5, y: 38}
+        - {x: -37.5, y: -15}
+        - {x: -28.5, y: -44}
+        - {x: 31.5, y: -44}
+        - {x: 37.5, y: -31}
+        - {x: 37.5, y: 43}
+        - {x: 36.5, y: 44}
     outline: []
   spritePackingTag: 
   userData: 

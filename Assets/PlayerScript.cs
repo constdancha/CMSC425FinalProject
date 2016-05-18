@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 using UnityEditor.SceneManagement;
@@ -8,11 +8,11 @@ public class PlayerScript : MonoBehaviour {
 	private Rigidbody rb;
 	public int speed;
 	PlayerHealth playerhealth;
-
+	GlobalController controller;
 	public Canvas tryAgainMenu;
 	public Button yesButton;
 	public Button noButton;
-
+	GameObject space; 
 	private Animator animator;
 
 
@@ -27,6 +27,8 @@ public class PlayerScript : MonoBehaviour {
 		noButton = noButton.GetComponent<Button> ();
 
 		tryAgainMenu.enabled = false;
+
+		
 	}
 		
 	void FixedUpdate () {
@@ -92,6 +94,15 @@ public class PlayerScript : MonoBehaviour {
 		if (other.gameObject.tag.Equals ("Health")) {
 			playerhealth.increaseHealth ();
 			Destroy (other.gameObject);
+		}
+		if(other.gameObject.tag.Equals("Fuel")){
+			playerhealth.increaseFuel();
+			Destroy(other.gameObject);
+			space = GameObject.FindWithTag("Space");
+		
+			controller=space.GetComponent<GlobalController>();
+			controller.pickedUpFuel();
+			
 		}
 
 	}

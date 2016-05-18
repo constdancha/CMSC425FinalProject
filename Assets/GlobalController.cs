@@ -9,7 +9,9 @@ public class GlobalController : MonoBehaviour {
 	public GameObject asteroidParent;
 	private GameObject tempAsteroid;
 	public GameObject playerObject;
-
+	public GameObject FuelPrefab;
+	
+	int numfuel=0;
 	public int startingAsteroids = 1000;
 	public float dimX, dimY;
 
@@ -28,10 +30,14 @@ public class GlobalController : MonoBehaviour {
 			Vector3 startingPosition = new Vector3(Random.Range(-dimX/2, dimX/2), Random.Range(-dimY/2, dimY/2), 0);
 			createAsteroid(startingPosition);
 		}
+		createFuel(playerObject.transform.position);
 	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
+		if(numfuel==0){
+			createFuel(playerObject.transform.position);
+		}
 		timeLeft -= Time.deltaTime;
 		if (timeLeft < 0) {
 			timeLeft = interval;
@@ -61,5 +67,24 @@ public class GlobalController : MonoBehaviour {
         		);
 
 		asteroid.transform.parent = asteroidParent.transform;
+	}
+
+	void createFuel(Vector3 position){
+		numfuel=1;
+		Vector3 startingPosition = new Vector3 (
+                Random.Range(-10, 10),
+                Random.Range(-10, 10),
+                0
+                );
+		startingPosition = position + startingPosition.normalized * 15;
+		GameObject fuel = (GameObject)Instantiate(
+        		FuelPrefab,
+        		startingPosition,
+        		Quaternion.identity
+        		);
+	}
+
+	public void pickedUpFuel(){
+		numfuel=0;
 	}
 }
