@@ -39,21 +39,27 @@ public class PlayerScript : MonoBehaviour {
 	void FixedUpdate () {
 		// Keeping the player on the z-plane
 		rb.position = new Vector3(rb.position.x, rb.position.y, 0);
-
-		//float moveHorizontal = Input.GetAxis("Horizontal");
 		float moveVertical = Input.GetAxis("Vertical");
 		Vector3 movement = new Vector3(0.0f, moveVertical, 0.0f);
-		if(Input.GetKey(KeyCode.LeftArrow)){
-			rotate(8);
-		}
-		if(Input.GetKey(KeyCode.RightArrow)){
-			rotate(-8);
-		}
-
-		if(Input.GetKey(KeyCode.UpArrow)){
-			forward();
+		if(playerhealth.currentHealth<=0){
+			animator.SetTrigger("AstroDead");
 		}else{
-			animator.SetTrigger("AstroAnim");
+			//float moveHorizontal = Input.GetAxis("Horizontal");
+			
+			if(Input.GetKey(KeyCode.LeftArrow)){
+				rotate(8);
+			}
+			if(Input.GetKey(KeyCode.RightArrow)){
+				rotate(-8);
+			}
+
+			if(Input.GetKey(KeyCode.UpArrow)){
+				forward();
+			}else{
+				if(playerhealth.currentHealth>0){
+					animator.SetTrigger("AstroAnim");
+				}
+			}
 		}
 		
 		
@@ -93,7 +99,7 @@ public class PlayerScript : MonoBehaviour {
 
 	void OnCollisionEnter(Collision collision){
 		if (collision.gameObject.tag.Equals ("Asteroid")) {
-			audio.PlayOneShot (asteroidHitSound, 0.9F);
+			//audio.PlayOneShot (asteroidHitSound, 0.9F);
 			playerhealth.getHit ();
 		}
 	}
