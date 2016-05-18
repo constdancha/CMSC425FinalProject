@@ -15,6 +15,8 @@ public class PlayerScript : MonoBehaviour {
 	GameObject space; 
 	private Animator animator;
 
+	AudioSource audio;
+	public AudioClip jetPackSound;
 
 	void Start(){
 		rb = GetComponent<Rigidbody> ();
@@ -25,6 +27,7 @@ public class PlayerScript : MonoBehaviour {
 		tryAgainMenu = tryAgainMenu.GetComponent<Canvas> ();
 		yesButton = yesButton.GetComponent<Button> ();
 		noButton = noButton.GetComponent<Button> ();
+		audio = GetComponent<AudioSource> ();
 
 		tryAgainMenu.enabled = false;
 
@@ -83,6 +86,7 @@ public class PlayerScript : MonoBehaviour {
 		animator.SetTrigger ("ThrustAnim");
 		rb.AddForce(transform.up * speed * Time.deltaTime);
 
+		audio.PlayOneShot (jetPackSound, 0.7F);
 	}
 
 	void OnCollisionEnter(Collision collision){
