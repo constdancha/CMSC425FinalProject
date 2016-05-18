@@ -55,7 +55,7 @@ public class PlayerHealth : MonoBehaviour {
 
 	public void increaseFuel() {
 		fuel += 50;
-		fuel = Mathf.Min(100, fuel);
+		fuel = Mathf.Min(200, fuel);
 	}
 
 	public void useFuel() {
@@ -64,7 +64,7 @@ public class PlayerHealth : MonoBehaviour {
 
 	public void getHit(){
 		damaged = true;
-		currentHealth -= 10;
+		currentHealth -= 20;
 	}
 
 	public void increaseHealth(){
